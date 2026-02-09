@@ -234,7 +234,7 @@ async function cmdThread() {
 
   console.log(`🧵 Thread (${tweets.length} tweets)\n`);
   for (const t of tweets) {
-    console.log(fmt.formatTweetTelegram(t));
+    console.log(fmt.formatTweetTelegram(t, undefined, { full: true }));
     console.log();
   }
 }
@@ -279,7 +279,7 @@ async function cmdTweet() {
   if (asJson) {
     console.log(JSON.stringify(tweet, null, 2));
   } else {
-    console.log(fmt.formatTweetTelegram(tweet));
+    console.log(fmt.formatTweetTelegram(tweet, undefined, { full: true }));
   }
 }
 

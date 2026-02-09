@@ -194,6 +194,17 @@ x-research/
     └── cache/            # Auto-managed
 ```
 
+## Security
+
+**Bearer token handling:** x-search reads your token from the `X_BEARER_TOKEN` env var or `~/.config/env/global.env`. The token is never printed to stdout, but be aware:
+
+- **AI coding agents** (Claude Code, Codex, etc.) may log tool calls — including HTTP headers — in session transcripts. If you're running x-search inside an agent session, your bearer token could appear in those logs.
+- **Recommendations:**
+  - Set `X_BEARER_TOKEN` as a system env var (not inline in commands)
+  - Review your agent's session log settings
+  - Use a token with minimal permissions (read-only)
+  - Rotate your token if you suspect exposure
+
 ## Limitations
 
 - Search covers last 7 days only (recent search endpoint restriction)

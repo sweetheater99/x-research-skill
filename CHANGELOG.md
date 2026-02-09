@@ -1,5 +1,13 @@
 # Changelog
 
+## v2.2.2 (2026-02-09)
+
+### Fixed
+- **Tweet truncation bug** — `tweet` and `thread` commands now show full tweet text instead of cutting off at 200 characters. Search results still truncate for readability. (h/t @sergeykarayev)
+
+### Added
+- **Security section in README** — Documents bearer token exposure risk when running inside AI coding agents with session logging. Includes recommendations for token handling.
+
 ## v2.2.1 (2026-02-09)
 
 ### Fixed
