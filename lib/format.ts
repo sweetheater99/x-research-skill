@@ -126,7 +126,6 @@ export function formatResearchMarkdown(
   out += `- **Date:** ${date}\n`;
   if (opts.apiCalls) out += `- **API calls:** ${opts.apiCalls}\n`;
   out += `- **Tweets scanned:** ${tweets.length}\n`;
-  out += `- **Est. cost:** ~$${((tweets.length * 0.005)).toFixed(2)}\n`;
   if (opts.queries) {
     out += `- **Search queries:**\n`;
     for (const q of opts.queries) {

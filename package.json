@@ -1,0 +1,7 @@
+{
+  "name": "x-research",
+  "private": true,
+  "dependencies": {
+    "@the-convocation/twitter-scraper": "^0.21.1"
+  }
+}

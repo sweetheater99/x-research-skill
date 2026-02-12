@@ -9,22 +9,43 @@ description: >
   "/x-research", (2) user is working on something where recent X discourse would provide
   useful context (new library releases, API changes, product launches, cultural events,
   industry drama), (3) user wants to find what devs/experts/community thinks about a topic.
-  NOT for: posting tweets or account management. Note: currently uses recent search (last 7 days). Full-archive search is available on the same pay-per-use X API plan but not yet implemented in this skill.
+  NOT for: posting tweets or account management. Uses agent-twitter-client scraper (free, no API cost). Requires TWITTER_USERNAME, TWITTER_PASSWORD, TWITTER_EMAIL env vars.
 ---
 
 # X Research
 
 General-purpose agentic research over X/Twitter. Decompose any research question into targeted searches, iteratively refine, follow threads, deep-dive linked content, and synthesize into a sourced briefing.
 
-For X API details (endpoints, operators, response format): read `references/x-api.md`.
+Uses `agent-twitter-client` scraper (free, zero API cost). Requires a Twitter account login — use a burner account as scraping carries ban risk. Cookies are persisted in `data/cookies.json` so login only happens once.
 
 ## CLI Tool
 
 All commands run from this skill directory:
 
 ```bash
-cd ~/clawd/skills/x-research
-source ~/.config/env/global.env
+cd ~/.claude/skills/x-research
+source ~/.config/env/global.env   # needs TWITTER_COOKIES (preferred) or TWITTER_USERNAME + TWITTER_PASSWORD + TWITTER_EMAIL
+```
+
+### Authentication
+
+**Cookie auth (recommended):** Twitter blocks programmatic login with CAPTCHAs. Export cookies from your browser instead:
+
+1. Log into x.com in your browser
+2. DevTools (F12) → Application → Cookies → `https://x.com`
+3. Copy the `auth_token` and `ct0` cookie values
+4. Set in `~/.config/env/global.env`:
+   ```
+   TWITTER_COOKIES="auth_token=XXXXX; ct0=YYYYY"
+   ```
+
+Cookies are cached in `data/cookies.json` after first successful use. They typically last weeks unless you log out of the browser session.
+
+**Login auth (fallback):** May fail due to Arkose CAPTCHA.
+```
+TWITTER_USERNAME=your_username
+TWITTER_PASSWORD=your_password
+TWITTER_EMAIL=your_email
 ```
 
 ### Search
@@ -48,7 +69,7 @@ bun run x-search.ts search "<query>" [options]
 - `--json` — raw JSON output
 - `--markdown` — markdown output for research docs
 
-Auto-adds `-is:retweet` unless query already includes it. All searches display estimated API cost.
+Auto-adds `-is:retweet` unless query already includes it.
 
 **Examples:**
 ```bash
@@ -179,7 +200,7 @@ skills/x-research/
 ├── SKILL.md           (this file)
 ├── x-search.ts        (CLI entry point)
 ├── lib/
-│   ├── api.ts         (X API wrapper: search, thread, profile, tweet)
+│   ├── api.ts         (Twitter scraper wrapper: search, thread, profile, tweet)
 │   ├── cache.ts       (file-based cache, 15min TTL)
 │   └── format.ts      (Telegram + markdown formatters)
 ├── data/

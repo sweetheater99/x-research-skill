@@ -149,7 +149,6 @@ async function cmdSearch() {
     cache.set(query, cacheParams, tweets);
   }
 
-  // Track raw count for cost (API charges per tweet read, regardless of post-hoc filters)
   const rawTweetCount = tweets.length;
 
   // Filter
@@ -199,14 +198,6 @@ async function cmdSearch() {
     });
     writeFileSync(path, md);
     console.error(`\nSaved to ${path}`);
-  }
-
-  // Cost display (based on raw API reads, not post-filter count)
-  const cost = (rawTweetCount * 0.005).toFixed(2);
-  if (quick) {
-    console.error(`\n⚡ quick mode · ${rawTweetCount} tweets read (~$${cost})`);
-  } else {
-    console.error(`\n📊 ${rawTweetCount} tweets read · est. cost ~$${cost}`);
   }
 
   // Stats to stderr
